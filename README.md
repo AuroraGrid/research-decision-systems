@@ -1,5 +1,8 @@
 # Hasan Kazmi — Research & Decision Systems
 
+[![Quality checks](https://github.com/hr185882-creator/Research-decision-systems/actions/workflows/quality.yml/badge.svg)](https://github.com/hr185882-creator/Research-decision-systems/actions/workflows/quality.yml)
+[![Live site smoke test](https://github.com/hr185882-creator/Research-decision-systems/actions/workflows/live-smoke.yml/badge.svg)](https://github.com/hr185882-creator/Research-decision-systems/actions/workflows/live-smoke.yml)
+
 A clean editorial portfolio for public-interest research, source verification, historical document analysis, and decision support.
 
 ## Live site
