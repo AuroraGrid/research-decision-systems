@@ -6,6 +6,10 @@ A clean editorial portfolio for public-interest research, source verification, h
 
 https://hasan-research-systems.vercel.app/
 
+## Repository
+
+https://github.com/hr185882-creator/Research-decision-systems
+
 ## Included projects
 
 ### EU Chat Control Monitor
@@ -38,8 +42,9 @@ Hasan Kazmi directed the research framing, analytical structure, editorial revie
 - The Epstein Record: https://the-epstein-record.vercel.app/
 - RECORD LOCK: https://record-lock-platform.vercel.app/
 - The U.S.–Israel Policy Network: https://youname-it.vercel.app/
+- U.S.–Israel repository: https://github.com/hr185882-creator/US-Israel-Policy-Network
 - AURORA GRID OS: https://hr185882-creator.github.io/aurora-grid-grindwire-site/
-- Recruiter-facing project index: https://github.com/hr185882-creator/clia-portfolio
+- Recruiter-facing profile: https://github.com/hr185882-creator
 
 ## Deployment
 
