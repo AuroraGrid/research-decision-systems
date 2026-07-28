@@ -1,0 +1,31 @@
+name: Live site smoke test
+
+on:
+  schedule:
+    - cron: "35 6 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/live-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify portfolio and project routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          for url in \
+            https://hasan-research-systems.vercel.app/ \
+            https://hasan-research-systems.vercel.app/eu-chat-control \
+            https://hasan-research-systems.vercel.app/russian-jfk-dossier
+          do
+            body="$(curl --fail --silent --show-error --location --retry 3 --max-time 30 "$url")"
+            test -n "$body"
+            echo "Verified $url"
+          done
