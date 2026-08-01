@@ -7,6 +7,10 @@ on:
   push:
     paths:
       - ".github/workflows/live-smoke.yml"
+      - "index.html"
+      - "eu-chat-control.html"
+      - "russian-jfk-dossier.html"
+      - "vercel.json"
 
 permissions:
   contents: read
@@ -16,16 +20,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Verify portfolio and project routes
+      - name: Verify canonical production routes and content
         shell: bash
         run: |
           set -euo pipefail
-          for url in \
-            https://hasan-research-systems.vercel.app/ \
-            https://hasan-research-systems.vercel.app/eu-chat-control \
-            https://hasan-research-systems.vercel.app/russian-jfk-dossier
-          do
+
+          check_page() {
+            url="$1"
+            marker="$2"
             body="$(curl --fail --silent --show-error --location --retry 3 --max-time 30 "$url")"
             test -n "$body"
-            echo "Verified $url"
-          done
+            printf '%s' "$body" | grep --fixed-strings --quiet "$marker"
+            echo "Verified $url contains: $marker"
+          }
+
+          check_page "https://hasan-research-systems.vercel.app/" "Rigorous evaluation for AI systems"
+          check_page "https://hasan-research-systems.vercel.app/eu-chat-control" "EU Chat Control Monitor"
+          check_page "https://hasan-research-systems.vercel.app/russian-jfk-dossier" "The Russian JFK Dossier"
