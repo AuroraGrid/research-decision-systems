@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hasan-research-systems.vercel.app/sitemap.xml
