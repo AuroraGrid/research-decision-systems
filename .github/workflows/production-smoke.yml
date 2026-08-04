@@ -1,0 +1,62 @@
+name: Production Smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify production routes and headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base='https://hasan-research-systems.vercel.app'
+          routes=(
+            '/'
+            '/eu-chat-control'
+            '/russian-jfk-dossier'
+            '/robots.txt'
+            '/sitemap.xml'
+            '/styles.css'
+            '/assets/portfolio-preview.svg'
+            '/assets/eu-chat-control-preview.svg'
+            '/assets/russian-jfk-dossier-preview.svg'
+          )
+
+          for route in "${routes[@]}"; do
+            status=$(curl --silent --show-error --location --output /tmp/body --write-out '%{http_code}' "$base$route")
+            test "$status" = '200' || {
+              echo "Expected HTTP 200 for $route; received $status"
+              exit 1
+            }
+            test -s /tmp/body || {
+              echo "Empty response body for $route"
+              exit 1
+            }
+          done
+
+          curl --silent --show-error --location --dump-header /tmp/headers --output /tmp/home "$base/"
+
+          grep -qi '^x-content-type-options: nosniff' /tmp/headers
+          grep -qi '^x-frame-options: DENY' /tmp/headers
+          grep -qi '^referrer-policy: strict-origin-when-cross-origin' /tmp/headers
+          grep -qi '^permissions-policy: camera=(), microphone=(), geolocation=()' /tmp/headers
+
+          grep -q 'Hasan Raza Kazmi' /tmp/home
+          grep -q 'AURORA GRID' /tmp/home
+          grep -q 'RECORD LOCK' /tmp/home
+          grep -q 'Inspectable proof' /tmp/home
+
+          echo 'Production smoke checks passed.'
