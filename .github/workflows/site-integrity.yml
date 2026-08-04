@@ -1,0 +1,70 @@
+name: Site integrity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-integrity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-static-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate repository site
+        run: node scripts/validate-site.mjs
+
+  production-smoke:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify production routes and headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://hasan-research-systems.vercel.app'
+          routes=(
+            '/'
+            '/eu-chat-control'
+            '/russian-jfk-dossier'
+            '/robots.txt'
+            '/sitemap.xml'
+            '/styles.css'
+            '/assets/portfolio-preview.svg'
+            '/assets/eu-chat-control-preview.svg'
+            '/assets/russian-jfk-dossier-preview.svg'
+          )
+
+          for route in "${routes[@]}"; do
+            echo "Checking ${base}${route}"
+            curl --fail --silent --show-error --location --retry 3 --retry-delay 2 --output /dev/null "${base}${route}"
+          done
+
+          headers="$(curl --fail --silent --show-error --location --head "${base}/")"
+          grep -qi '^x-content-type-options: nosniff' <<<"$headers"
+          grep -qi '^x-frame-options: DENY' <<<"$headers"
+          grep -qi '^referrer-policy: strict-origin-when-cross-origin' <<<"$headers"
+          grep -qi '^permissions-policy:' <<<"$headers"
+
+          homepage="$(curl --fail --silent --show-error --location "${base}/")"
+          grep -q 'AURORA GRID' <<<"$homepage"
+          grep -q 'RECORD LOCK' <<<"$homepage"
+          grep -q 'Inspectable proof' <<<"$homepage"
