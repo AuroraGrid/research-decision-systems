@@ -23,7 +23,7 @@ A direct one-file Vercel upload can replace the homepage while silently removing
 
 ## Repository governance
 
-Changes to production should be proposed through pull requests, pass the repository quality checks, and be merged only after the deployment impact is reviewable.
+Changes to production should be proposed through pull requests, pass the repository quality checks, and be merged through GitHub only after the deployment impact is reviewable.
 
 ## Portfolio scope
 
