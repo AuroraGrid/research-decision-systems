@@ -1,39 +1,55 @@
-name: Live site smoke test
+name: Live Smoke
 
 on:
-  schedule:
-    - cron: "35 6 * * *"
   workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
   push:
     paths:
-      - ".github/workflows/live-smoke.yml"
-      - "index.html"
-      - "eu-chat-control.html"
-      - "russian-jfk-dossier.html"
-      - "vercel.json"
+      - '.github/workflows/live-smoke.yml'
+      - 'index.html'
+      - 'eu-chat-control/**'
+      - 'russian-jfk-dossier/**'
+      - 'robots.txt'
+      - 'sitemap.xml'
+      - 'vercel.json'
 
 permissions:
   contents: read
 
+concurrency:
+  group: live-smoke-production
+  cancel-in-progress: true
+
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - name: Verify canonical production routes and content
+      - name: Check production routes, content, and headers
         shell: bash
         run: |
           set -euo pipefail
+          base='https://hasan-research-systems.vercel.app'
 
           check_page() {
-            url="$1"
+            path="$1"
             marker="$2"
-            body="$(curl --fail --silent --show-error --location --retry 3 --max-time 30 "$url")"
-            test -n "$body"
-            printf '%s' "$body" | grep --fixed-strings --quiet "$marker"
-            echo "Verified $url contains: $marker"
+            url="$base$path"
+            code=$(curl --silent --show-error --location --retry 3 --max-time 30 --output /tmp/body --write-out '%{http_code}' "$url")
+            test "$code" = '200' || { echo "$url returned $code"; exit 1; }
+            grep --fixed-strings --quiet "$marker" /tmp/body
+            echo "Verified $url"
           }
 
-          check_page "https://hasan-research-systems.vercel.app/" "Rigorous evaluation for AI systems"
-          check_page "https://hasan-research-systems.vercel.app/eu-chat-control" "EU Chat Control Monitor"
-          check_page "https://hasan-research-systems.vercel.app/russian-jfk-dossier" "The Russian JFK Dossier"
+          check_page '/' 'Rigorous evaluation for AI systems'
+          check_page '/eu-chat-control' 'EU Chat Control Monitor'
+          check_page '/russian-jfk-dossier' 'The Russian JFK Dossier'
+          check_page '/robots.txt' 'User-agent: *'
+          check_page '/sitemap.xml' 'https://hasan-research-systems.vercel.app/'
+
+          curl --silent --show-error --location --dump-header /tmp/headers --output /tmp/home "$base/"
+          grep -qi '^x-content-type-options: nosniff' /tmp/headers
+          grep -qi '^x-frame-options: DENY' /tmp/headers
+          grep -qi '^referrer-policy: strict-origin-when-cross-origin' /tmp/headers
+          grep -qi '^permissions-policy: camera=(), microphone=(), geolocation=()' /tmp/headers
