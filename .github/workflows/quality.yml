@@ -1,7 +1,8 @@
-name: Quality checks
+name: Required quality gate
 
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -9,25 +10,26 @@ permissions:
   contents: read
 
 concurrency:
-  group: quality-${{ github.workflow }}-${{ github.ref }}
+  group: required-quality-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
+  site-quality:
+    name: site-quality
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    timeout-minutes: 10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: '22'
+          package-manager-cache: false
 
-      - name: Run deterministic site validation
+      - name: Validate site, routes, assets, metadata, and headers
         run: npm test
 
-      - name: Validate Vercel configuration
+      - name: Validate Vercel configuration JSON
         run: node -e "JSON.parse(require('node:fs').readFileSync('vercel.json','utf8')); console.log('vercel.json is valid JSON')"
