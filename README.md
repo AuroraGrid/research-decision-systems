@@ -21,6 +21,10 @@ https://hasan-research-systems.vercel.app/
 
 A direct one-file Vercel upload can replace the homepage while silently removing the research routes. Production should therefore be deployed from this repository or from a complete artifact containing every tracked route and asset.
 
+## Repository governance
+
+Changes intended for production should be proposed through pull requests, pass the repository quality checks, and preserve visible Git and deployment provenance. Direct pushes to `main` should be avoided once branch rules are enabled.
+
 ## Portfolio scope
 
 The homepage links to the broader public portfolio:
