@@ -9,8 +9,8 @@ const requiredFiles = [
   'robots.txt',
   'sitemap.xml',
   'vercel.json',
-  'eu-chat-control/index.html',
-  'russian-jfk-dossier/index.html',
+  'eu-chat-control.html',
+  'russian-jfk-dossier.html',
 ];
 
 const fail = (message) => failures.push(message);
