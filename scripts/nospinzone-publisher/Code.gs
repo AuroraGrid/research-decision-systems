@@ -234,7 +234,8 @@ function createXPost_(text) {
   ].join('&');
 
   const signingKey = oauthEncode_(consumerSecret) + '&' + oauthEncode_(accessTokenSecret);
-  const signatureBytes = Utilities.computeHmacSha1Signature(
+  const signatureBytes = Utilities.computeHmacSignature(
+    Utilities.MacAlgorithm.HMAC_SHA_1,
     baseString,
     signingKey,
     Utilities.Charset.UTF_8
