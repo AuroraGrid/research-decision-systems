@@ -40,7 +40,7 @@ AI Product Builder & Strategic Intelligence Analyst
 Pakistan · Fully remote
 
 Email: Grindwireproject@gmail.com  
-GitHub: https://github.com/hr185882-creator
+GitHub: https://github.com/AuroraGrid
 
 ---
 
