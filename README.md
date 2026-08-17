@@ -1,54 +1,49 @@
-# Hasan Kazmi — Research & Decision Systems
+# Research & Decision Systems
 
-[![Quality checks](https://github.com/hr185882-creator/research-decision-systems/actions/workflows/quality.yml/badge.svg)](https://github.com/hr185882-creator/research-decision-systems/actions/workflows/quality.yml)
-[![Live site smoke test](https://github.com/hr185882-creator/research-decision-systems/actions/workflows/live-smoke.yml/badge.svg)](https://github.com/hr185882-creator/research-decision-systems/actions/workflows/live-smoke.yml)
+**Portfolio of research products and decision tools**
 
-Canonical source repository for Hasan Raza Kazmi's recruiter-facing portfolio and two public research case studies.
+This is the main public portfolio for the systems and research products built by Hasan Raza Kazmi.
+
+It brings together tools for evidence checking, structured analysis, and decision support under uncertainty.
+
+---
 
 ## Live site
 
-https://hasan-research-systems.vercel.app/
+→ [https://hasan-research-systems.vercel.app/](https://hasan-research-systems.vercel.app/)
 
-## Canonical deployment contract
+---
 
-- This repository is the intended source of truth for the Vercel project `hasan-research-systems`.
-- The repository root is deployed as a static site with no build command.
-- `index.html` is the recruiter-facing homepage.
-- `eu-chat-control.html` is served at `/eu-chat-control`.
-- `russian-jfk-dossier.html` is served at `/russian-jfk-dossier`.
-- `vercel.json` enables clean URLs and security headers.
-- The scheduled smoke workflow verifies both HTTP success and page-specific content markers.
+## What you will find here
 
-A direct one-file Vercel upload can replace the homepage while silently removing the research routes. Production should therefore be deployed from this repository or from a complete artifact containing every tracked route and asset.
+- Clear overviews of the main systems (AURORA GRID, RECORD LOCK, and others)
+- Selected research case studies
+- Links to live products and source code
 
-## Repository governance
+The focus is on work that is actually built and usable, not just concepts.
 
-Changes to production should be proposed through pull requests, pass the repository quality checks, and be merged only after the deployment impact is reviewable.
+---
 
-## Portfolio scope
+## Design principles
 
-The homepage links to the broader public portfolio:
+- Show real capability before making strong claims
+- Keep sources and uncertainty visible
+- Prefer clear language over jargon
+- Maintain honest status (what works vs what is still in progress)
 
-- AURORA GRID / GrindWire
-- EU Chat Control Monitor
-- The Russian JFK Dossier
-- RECORD LOCK
-- The Epstein Record
-- U.S.–Israel Policy Network
+---
 
-## Design and publication principles
+## Creator
 
-- demonstrated capability before unsupported positioning;
-- primary records and explicit source hierarchy;
-- clear authorship and AI-assistance disclosure;
-- explicit uncertainty and analytical limits;
-- no fake live indicators or dashboard theater;
-- responsive static HTML and CSS;
-- Open Graph metadata for professional sharing;
-- production monitoring that fails on wrong content, not only empty responses.
+**Hasan Raza Kazmi**  
+AI Product Builder & Strategic Intelligence Analyst  
+Pakistan · Fully remote
 
-## Role and contact
+Email: Grindwireproject@gmail.com  
+GitHub: https://github.com/hr185882-creator
 
-Hasan Raza Kazmi directs the research framing, analytical structure, editorial review, product architecture, quality assurance, and deployment decisions.
+---
 
-Professional contact: Grindwireproject@gmail.com
+## Technical note
+
+This repository powers the live portfolio site. Changes should go through review so the public pages stay accurate and complete.
